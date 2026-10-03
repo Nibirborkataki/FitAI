@@ -1,0 +1,367 @@
+.coach-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ---------- Sidebar ---------- */
+
+.coach-side {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 14px;
+}
+.coach-profile {
+  display: grid;
+  gap: 8px;
+  padding-top: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(200, 246, 93, 0.14), transparent 60%),
+    linear-gradient(180deg, rgb(var(--fg-rgb) / 0.05), rgb(var(--fg-rgb) / 0.02));
+}
+.coach-athlete {
+  height: 200px;
+  margin: 0 -24px;
+}
+.coach-profile h1 {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+.coach-profile p {
+  font-size: 14px;
+}
+
+.usage {
+  display: grid;
+  gap: 12px;
+  padding: 18px 20px;
+}
+.usage-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-2);
+}
+.usage-top span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.usage-top svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-text);
+}
+.usage-top b {
+  font-family: var(--font-display);
+  color: var(--text);
+}
+.usage-bar {
+  height: 6px;
+  border-radius: 6px;
+  background: var(--line);
+  overflow: hidden;
+}
+.usage-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--violet), var(--lime));
+  transition: width 0.6s var(--ease-out);
+}
+
+.suggestions-card {
+  padding: 20px;
+}
+.suggestions-card h4 {
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+.prompt-list {
+  display: grid;
+  gap: 8px;
+}
+.prompt {
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgb(var(--fg-rgb) / 0.025);
+  font-size: 13.5px;
+  text-align: left;
+  color: var(--text-2);
+  transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.3s var(--ease-out);
+}
+.prompt:hover:not(:disabled) {
+  border-color: rgba(200, 246, 93, 0.45);
+  color: var(--text);
+  background: var(--lime-soft);
+  transform: translateX(4px);
+}
+.prompt:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Chat ---------- */
+
+.coach-chat {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  height: calc(100vh - 140px);
+  min-height: 520px;
+  padding: 0;
+  overflow: hidden;
+}
+.chat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--line);
+  min-height: 66px;
+}
+.chat-head .btn svg {
+  width: 15px;
+  height: 15px;
+}
+.chat-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 0 4px rgba(200, 246, 93, 0.15);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  50% {
+    box-shadow: 0 0 0 7px rgba(200, 246, 93, 0.05);
+  }
+}
+
+.chat-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 22px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--fg-rgb) / 0.15) transparent;
+}
+
+.chat-empty {
+  margin: auto;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+  max-width: 360px;
+}
+.chat-empty svg {
+  width: 52px;
+  height: 52px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--lime-soft);
+  color: var(--accent-text);
+}
+.chat-empty h3 {
+  font-size: 20px;
+}
+
+.bubble {
+  max-width: min(680px, 86%);
+  padding: 13px 17px;
+  border-radius: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+.bubble.user {
+  align-self: flex-end;
+  background: var(--lime);
+  color: var(--lime-ink);
+  border-bottom-right-radius: 6px;
+  font-weight: 500;
+}
+.bubble.assistant {
+  align-self: flex-start;
+  background: rgb(var(--fg-rgb) / 0.05);
+  border: 1px solid var(--line);
+  border-bottom-left-radius: 6px;
+}
+.bubble p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* Markdown inside AI replies */
+.md > * + * {
+  margin-top: 10px;
+}
+.md p {
+  white-space: normal;
+}
+.md ul,
+.md ol {
+  margin: 0;
+  padding-left: 20px;
+}
+.md li + li {
+  margin-top: 4px;
+}
+.md li::marker {
+  color: var(--accent-text);
+}
+.md strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.md h1,
+.md h2,
+.md h3 {
+  font-size: 16px;
+}
+.md code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgb(var(--fg-rgb) / 0.08);
+  font-size: 13px;
+}
+
+.typing {
+  display: flex;
+  gap: 5px;
+  padding: 16px 18px;
+}
+.typing i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-2);
+  animation: bounce 1.2s ease-in-out infinite;
+}
+.typing i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.typing i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+.chat-error {
+  margin: 0 22px 12px;
+}
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin: 0 16px 16px;
+  padding: 8px 8px 8px 18px;
+  border-radius: 22px;
+  border: 1px solid var(--line-strong);
+  background: var(--inset);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.composer:focus-within {
+  border-color: rgba(200, 246, 93, 0.55);
+  box-shadow: 0 0 0 4px rgba(200, 246, 93, 0.08);
+}
+.composer textarea {
+  flex: 1;
+  min-height: 40px;
+  max-height: 160px;
+  padding: 9px 0;
+  border: 0;
+  outline: none;
+  resize: none;
+  background: transparent;
+  field-sizing: content;
+  line-height: 1.45;
+}
+.composer textarea::placeholder {
+  color: var(--text-3);
+}
+.send {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--lime);
+  color: var(--lime-ink);
+  transition: transform 0.3s var(--ease-out), opacity 0.2s;
+}
+.send:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+.send:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.send svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5;
+}
+
+@media (max-width: 960px) {
+  .coach-grid {
+    grid-template-columns: 1fr;
+  }
+  .coach-side {
+    position: static;
+    grid-template-columns: 1fr 1fr;
+  }
+  .suggestions-card {
+    grid-column: 1 / -1;
+  }
+  .prompt-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .coach-chat {
+    height: 72vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .coach-side {
+    grid-template-columns: 1fr;
+  }
+  .coach-profile {
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    padding: 0 20px 0 0;
+  }
+  .coach-athlete {
+    height: 150px;
+    margin: 0;
+  }
+  .bubble {
+    max-width: 92%;
+  }
+}
