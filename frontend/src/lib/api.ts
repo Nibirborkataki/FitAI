@@ -10,6 +10,12 @@ import type {
 
 const TOKEN_KEY = 'fitai.token'
 
+/**
+ * Backend origin. Empty in development (Vite proxies /api to :8000);
+ * set VITE_API_URL to the deployed API, e.g. https://fitai-api.onrender.com
+ */
+const API_BASE = ((import.meta.env.VITE_API_URL as string | undefined) ?? '').trim().replace(/\/+$/, '')
+
 export class ApiError extends Error {
   status: number
 
@@ -59,8 +65,12 @@ function describeError(body: unknown, status: number): string {
       return field ? `${String(field).replace(/_/g, ' ')}: ${detail[0].msg}` : detail[0].msg
     }
   }
-  // The Vite dev proxy answers 502/504 when the FastAPI backend isn't running
-  if (status === 502 || status === 504) return 'Cannot reach the server. Is the backend running on port 8000?'
+  // The Vite dev proxy (or a waking host) answers 502/504 when the API isn't up
+  if (status === 502 || status === 504) {
+    return import.meta.env.DEV
+      ? 'Cannot reach the server. Is the backend running on port 8000?'
+      : 'The server is starting up. Please try again in a few seconds.'
+  }
   if (status >= 500) return 'Server error. Please try again.'
   return 'Something went wrong. Please try again.'
 }
@@ -74,9 +84,9 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
   let response: Response
   try {
-    response = await fetch(path, { ...options, headers })
+    response = await fetch(API_BASE + path, { ...options, headers })
   } catch {
-    throw new ApiError(0, 'Cannot reach the server. Is the backend running?')
+    throw new ApiError(0, 'Cannot reach the server. Please check your connection and try again.')
   }
 
   if (response.status === 204) return undefined as T
@@ -94,6 +104,14 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 }
 
 const json = (data: unknown) => JSON.stringify(data)
+
+/**
+ * Fire-and-forget ping so a sleeping free-tier backend starts booting
+ * while the user is still reading the page.
+ */
+export function wakeServer() {
+  fetch(API_BASE + '/api/health', { cache: 'no-store' }).catch(() => undefined)
+}
 
 export const api = {
   register: (fullName: string, email: string, password: string) =>
