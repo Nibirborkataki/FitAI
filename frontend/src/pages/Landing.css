@@ -374,6 +374,18 @@
   max-width: 1000px;
 }
 
+.footer-credit {
+  color: var(--accent-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.25s;
+}
+.footer-credit:hover {
+  text-decoration-color: currentColor;
+}
+
 .footer {
   display: flex;
   flex-wrap: wrap;

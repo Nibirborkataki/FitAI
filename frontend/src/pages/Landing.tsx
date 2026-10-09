@@ -367,7 +367,17 @@ export default function Landing() {
       </section>
 
       <footer className="footer container">
-        <span>© {new Date().getFullYear()} FitAI</span>
+        <span>
+          © {new Date().getFullYear()} FitAI · Developed by{' '}
+          <a
+            className="footer-credit"
+            href="https://nibir-portfolio-pi.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Nibir Borkataki
+          </a>
+        </span>
         <span className="muted">
           FitAI gives general fitness guidance, not medical advice. Check with a doctor before starting a new programme.
         </span>
